@@ -54,7 +54,26 @@ export function DeviceProvider({ children }: { children: React.ReactNode }) {
       ];
     }
     try {
-      return JSON.parse(stored);
+      const parsed: Device[] = JSON.parse(stored);
+      // Migrare rapidă: aduce seed-ul în RO dacă există versiunea veche stocată
+      return parsed.map((d) =>
+        d.id === "seed-seated-leg-press"
+          ? {
+              ...d,
+              name: "Seated Leg Press",
+              description: "Întărește cvadricepșii și fesierii cu o împingere controlată.",
+              location: "Zonă forță",
+              muscleGroup: "Picioare",
+              steps: [
+                "Ajustează scaunul și placa astfel încât genunchii să fie la ~90°.",
+                "Așază picioarele la lățimea șoldurilor pe placă, tălpile plate.",
+                "Împinge controlat până când picioarele sunt aproape întinse, fără blocarea genunchilor.",
+                "Coboară încet la poziția de start.",
+                "Repetă 10-15 repetări cu tensiune constantă.",
+              ],
+            }
+          : d,
+      );
     } catch {
       return [];
     }

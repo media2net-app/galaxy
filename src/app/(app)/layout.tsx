@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const navItems = [
@@ -14,6 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, user, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const isPublicDevice = pathname.startsWith("/devices/") && pathname.split("/").length >= 3;
 
@@ -29,9 +30,36 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-slate-900 text-slate-100">
       {!isPublicDevice && (
         <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-4 sm:px-6">
+            <div className="flex items-center justify-between gap-3">
               <span className="text-lg font-semibold text-white">Galaxy Gym</span>
+              <div className="flex items-center gap-3">
+                <button
+                  className="rounded-md border border-slate-700 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800 sm:hidden"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  aria-expanded={menuOpen}
+                  aria-controls="mobile-nav"
+                >
+                  {menuOpen ? "Închide" : "Meniu"}
+                </button>
+                <button
+                  onClick={() => {
+                    logout();
+                    router.replace("/login");
+                  }}
+                  className="hidden rounded-md border border-slate-700 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800 sm:inline-flex"
+                >
+                  Deconectare
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="mobile-nav"
+              className={`flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6 ${
+                menuOpen ? "flex" : "hidden sm:flex"
+              }`}
+            >
               <nav className="flex flex-wrap gap-2 text-sm font-medium text-slate-200">
                 {navItems.map((item) => (
                   <Link
@@ -42,20 +70,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         ? "bg-indigo-600 text-white shadow-sm"
                         : "text-slate-300 hover:bg-slate-800 hover:text-white"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
                     {item.label}
                   </Link>
                 ))}
               </nav>
-            </div>
-            <div className="flex flex-wrap items-center gap-3 text-sm text-slate-200">
-              <span className="text-slate-400">{user}</span>
+              {user && (
+                <span className="text-xs font-medium text-slate-400 sm:text-sm">Conectat: {user}</span>
+              )}
               <button
                 onClick={() => {
                   logout();
                   router.replace("/login");
                 }}
-                className="rounded-md border border-slate-700 px-3 py-2 font-medium text-white transition hover:bg-slate-800"
+                className="rounded-md border border-slate-700 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800 sm:hidden"
               >
                 Deconectare
               </button>

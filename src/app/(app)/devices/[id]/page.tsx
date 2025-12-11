@@ -1,8 +1,8 @@
 "use client";
 
-import { notFound, useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
-import { useDevices } from "@/components/devices/DeviceProvider";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useDevices, type Device } from "@/components/devices/DeviceProvider";
 
 const toEmbedUrl = (url?: string) => {
   if (!url) return undefined;
@@ -11,14 +11,14 @@ const toEmbedUrl = (url?: string) => {
     if (u.hostname === "youtu.be") {
       const id = u.pathname.replace("/", "");
       const params = u.search ? `${u.search}&` : "?";
-      return `https://www.youtube.com/embed/${id}${params}autoplay=1&mute=1&rel=0`;
+      return `https://www.youtube.com/embed/${id}${params}autoplay=1&rel=0`;
     }
     if (u.hostname.includes("youtube.com")) {
       const id = u.searchParams.get("v");
-      if (id) return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
-      if (u.pathname.startsWith("/embed/")) return `${url}${url.includes("?") ? "&" : "?"}autoplay=1&mute=1&rel=0`;
+      if (id) return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+      if (u.pathname.startsWith("/embed/")) return `${url}${url.includes("?") ? "&" : "?"}autoplay=1&rel=0`;
     }
-    return `${url}${url.includes("?") ? "&" : "?"}autoplay=1&mute=1`;
+    return `${url}${url.includes("?") ? "&" : "?"}autoplay=1`;
   } catch {
     return url;
   }
@@ -28,23 +28,45 @@ export default function DeviceDetailPage() {
   const params = useParams<{ id: string }>();
   const { getDevice } = useDevices();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [hydrated, setHydrated] = useState(false);
 
-  const device = useMemo(() => getDevice(params.id), [getDevice, params.id]);
+  useEffect(() => {
+    // mark as client-only without triggering extra renders
+    setTimeout(() => setHydrated(true), 0);
+  }, []);
+
+  const payloadDevice = useMemo(() => {
+    const payload = searchParams.get("payload");
+    if (!payload) return undefined;
+    try {
+      return JSON.parse(atob(payload)) as Device;
+    } catch {
+      return undefined;
+    }
+  }, [searchParams]);
+
+  const device = useMemo(() => getDevice(params.id) ?? payloadDevice, [getDevice, params.id, payloadDevice]);
   const embedUrl = toEmbedUrl(device?.videoUrl);
 
   useEffect(() => {
-    if (!device) {
-      // in scans, keep it graceful by redirecting after short delay
-      const t = setTimeout(() => router.replace("/login"), 2200);
-      return () => clearTimeout(t);
+    if (!device && hydrated) {
+      // graceful fallback: show message, no redirect
+      return;
     }
-  }, [device, router]);
+  }, [device, hydrated, router]);
 
   if (!device) {
-    notFound();
+    return (
+      <div className="mx-auto max-w-3xl space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-slate-700 shadow-sm">
+        <h1 className="text-2xl font-semibold text-slate-900">Aparat indisponibil</h1>
+        <p className="text-sm">
+          Nu am găsit acest aparat în datele locale. Deschide linkul din panoul de admin sau scanează un QR generat
+          recent.
+        </p>
+      </div>
+    );
   }
-
-  if (!device) return null;
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
@@ -74,13 +96,13 @@ export default function DeviceDetailPage() {
       {device.steps.length > 0 && (
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-slate-900">Pași</h2>
-          <ol className="space-y-2 rounded-xl bg-slate-50 p-4 text-sm text-slate-700">
+          <ol className="space-y-3 rounded-xl bg-slate-50 p-4 text-sm text-slate-700">
             {device.steps.map((step, idx) => (
-              <li key={idx} className="flex gap-3">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 text-xs font-semibold text-white">
+              <li key={idx} className="flex items-start gap-3">
+                <span className="mt-0.5 flex h-6 min-w-6 items-center justify-center rounded-full bg-indigo-600 px-2 text-xs font-semibold text-white leading-none">
                   {idx + 1}
                 </span>
-                <span className="pt-0.5">{step}</span>
+                <span className="pt-0.5 leading-relaxed">{step}</span>
               </li>
             ))}
           </ol>

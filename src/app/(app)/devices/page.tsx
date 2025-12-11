@@ -49,7 +49,7 @@ export default function DevicesPage() {
       };
 
       if (!payload.name) throw new Error("Naam is verplicht.");
-      if (!payload.description) throw new Error("Korte omschrijving is verplicht.");
+      if (!payload.description) throw new Error("Descriere scurtă este obligatorie.");
 
       if (editingId) {
         updateDevice(editingId, payload);
@@ -249,7 +249,11 @@ function DeviceCard({
 }) {
   const origin =
     typeof window !== "undefined" && window.location.origin ? window.location.origin : "";
-  const qrValue = `${origin}/devices/${device.id}`;
+  const payload = typeof window !== "undefined" ? btoa(JSON.stringify(device)) : "";
+  const qrValue =
+    origin && payload
+      ? `${origin}/devices/${device.id}?payload=${encodeURIComponent(payload)}`
+      : `${origin}/devices/${device.id}`;
 
   const stepsText = useMemo(() => device.steps.join(", "), [device.steps]);
 
