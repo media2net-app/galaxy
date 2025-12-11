@@ -6,8 +6,8 @@ import { useEffect } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/devices", label: "Apparaten" },
+  { href: "/dashboard", label: "Panou" },
+  { href: "/devices", label: "Aparate" },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -57,7 +57,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 }}
                 className="rounded-md border border-slate-700 px-3 py-2 font-medium text-white transition hover:bg-slate-800"
               >
-                Uitloggen
+                Deconectare
               </button>
             </div>
           </div>

@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white">
-      <p className="text-sm text-slate-200">Even laden...</p>
+      <p className="text-sm text-slate-200">Se încarcă...</p>
     </div>
   );
 }

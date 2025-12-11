@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Galaxy Gym QR",
-  description: "QR gestuurde uitlegpagina's voor fitnessapparatuur",
+  description: "Pagini de instrucțiuni cu QR pentru aparate de fitness",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl">
+    <html lang="ro">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}>
         <AppProviders>{children}</AppProviders>
       </body>

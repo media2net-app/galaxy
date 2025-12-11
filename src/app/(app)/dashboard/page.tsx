@@ -13,31 +13,31 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-400">
-            Overzicht
+            Privire de ansamblu
           </p>
-          <h1 className="text-3xl font-semibold text-white">Dashboard</h1>
-          <p className="text-slate-300">Beheer je apparaten en QR uitlegpagina&apos;s.</p>
+          <h1 className="text-3xl font-semibold text-white">Panou de control</h1>
+          <p className="text-slate-300">Administrează aparatele și paginile de instrucțiuni cu QR.</p>
         </div>
         <Link
           href="/devices"
           className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 sm:w-auto"
         >
-          Naar apparaten
+          Mergi la aparate
         </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-        <StatCard label="Totaal apparaten" value={total} />
-        <StatCard label="Met video" value={withVideo} />
-        <StatCard label="Met stappenplan" value={devices.filter((d) => d.steps.length).length} />
+        <StatCard label="Total aparate" value={total} />
+        <StatCard label="Cu video" value={withVideo} />
+        <StatCard label="Cu pași" value={devices.filter((d) => d.steps.length).length} />
       </div>
 
       <section className="rounded-2xl border border-slate-800 bg-slate-800 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-white">Hoe werkt het?</h2>
+        <h2 className="text-lg font-semibold text-white">Cum funcționează?</h2>
         <div className="mt-3 space-y-2 text-sm text-slate-300">
-          <p>1. Voeg een apparaat toe met video en stappenplan.</p>
-          <p>2. Print de QR code en plak de sticker op het toestel.</p>
-          <p>3. De sporter scant de QR en ziet direct de uitlegpagina.</p>
+          <p>1. Adaugă un aparat cu video și pași.</p>
+          <p>2. Prin­tează codul QR și lipește stickerul pe aparat.</p>
+          <p>3. Sportivul scanează și vede instrucțiunile imediat.</p>
         </div>
       </section>
     </div>

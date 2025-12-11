@@ -39,14 +39,14 @@ export default function LoginPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-500">
             Galaxy Gym
           </p>
-          <h1 className="mt-2 text-2xl font-semibold text-slate-900">Log in</h1>
+          <h1 className="mt-2 text-2xl font-semibold text-slate-900">Autentificare</h1>
           <p className="text-sm text-slate-500">
-            Demo login: gebruik eender welk e-mail adres en wachtwoord.
+            Login demo: orice email și parolă funcționează.
           </p>
         </div>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">E-mail</label>
+            <label className="text-sm font-medium text-slate-700">Email</label>
             <input
               type="email"
               required
@@ -57,7 +57,7 @@ export default function LoginPage() {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Wachtwoord</label>
+            <label className="text-sm font-medium text-slate-700">Parolă</label>
             <input
               type="password"
               required
@@ -73,7 +73,7 @@ export default function LoginPage() {
             disabled={loading}
             className="flex w-full items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? "Bezig..." : "Inloggen"}
+            {loading ? "Se încarcă..." : "Autentificare"}
           </button>
         </form>
       </div>

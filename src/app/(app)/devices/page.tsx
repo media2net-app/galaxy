@@ -87,10 +87,10 @@ export default function DevicesPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-500">
-            Apparaten
+            Aparate
           </p>
-          <h1 className="text-3xl font-semibold text-slate-900">Apparaatbeheer</h1>
-          <p className="text-slate-500">Voeg een toestel toe en genereer direct de QR sticker.</p>
+          <h1 className="text-3xl font-semibold text-slate-900">Administrare aparate</h1>
+          <p className="text-slate-500">Adaugă un aparat și generează imediat stickerul QR.</p>
         </div>
         <button
           type="button"
@@ -99,7 +99,7 @@ export default function DevicesPage() {
           aria-expanded={showForm}
           aria-controls="device-form"
         >
-          {showForm ? "Formulier verbergen" : "Nieuw apparaat toevoegen"}
+          {showForm ? "Ascunde formularul" : "Adaugă aparat"}
         </button>
       </div>
 
@@ -111,7 +111,7 @@ export default function DevicesPage() {
         >
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-slate-900">
-              {editingId ? "Bewerk apparaat" : "Nieuw apparaat"}
+              {editingId ? "Editează aparatul" : "Aparat nou"}
             </h2>
             {editingId && (
               <button
@@ -119,54 +119,54 @@ export default function DevicesPage() {
                 onClick={cancelEdit}
                 className="text-sm font-medium text-slate-600 underline underline-offset-4"
               >
-                Annuleer
+                Anulează
               </button>
             )}
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field
-              label="Naam"
+              label="Nume"
               required
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
             />
             <Field
-              label="Locatie"
-              placeholder="Circuit zone / zaal"
+              label="Locație"
+              placeholder="Zonă circuit / sală"
               value={form.location}
               onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
             />
             <Field
-              label="Spiergroep"
-              placeholder="Borst, rug, benen..."
+              label="Grup muscular"
+              placeholder="Piept, spate, picioare..."
               value={form.muscleGroup}
               onChange={(e) => setForm((f) => ({ ...f, muscleGroup: e.target.value }))}
             />
             <Field
-              label="Video URL (YouTube, Vimeo...)"
+              label="URL video (YouTube, Vimeo...)"
               placeholder="https://youtu.be/..."
               value={form.videoUrl}
               onChange={(e) => setForm((f) => ({ ...f, videoUrl: e.target.value }))}
             />
           </div>
           <TextArea
-            label="Korte omschrijving"
+            label="Descriere scurtă"
             required
             value={form.description}
             onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
           />
           <TextArea
-            label="Stappenplan (1 per regel)"
+            label="Pași (1 pe linie)"
             value={form.stepsText}
             onChange={(e) => setForm((f) => ({ ...f, stepsText: e.target.value }))}
-            placeholder={"Stap 1...\nStap 2...\nStap 3..."}
+            placeholder={"Pas 1...\nPas 2...\nPas 3..."}
           />
           {error && <p className="text-sm text-red-600">{error}</p>}
           <button
             type="submit"
             className="inline-flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 sm:w-auto"
           >
-            {editingId ? "Opslaan" : "Toevoegen"}
+            {editingId ? "Salvează" : "Adaugă"}
           </button>
         </form>
       )}
@@ -185,7 +185,7 @@ export default function DevicesPage() {
         ))}
         {!devices.length && (
           <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-6 text-sm text-slate-500 shadow-sm">
-            Nog geen apparaten. Gebruik de knop hierboven om het eerste toestel toe te voegen.
+            Nu există aparate. Folosește butonul de mai sus pentru primul aparat.
           </div>
         )}
       </div>
@@ -258,23 +258,23 @@ function DeviceCard({
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-[0.18em] text-indigo-500">
-            {device.muscleGroup || "Apparaat"}
+            {device.muscleGroup || "Aparat"}
           </p>
           <h3 className="text-xl font-semibold text-slate-900">{device.name}</h3>
           <p className="text-sm text-slate-600">{device.description}</p>
           {device.location && (
-            <p className="mt-1 text-xs font-medium text-slate-500">Locatie: {device.location}</p>
+            <p className="mt-1 text-xs font-medium text-slate-500">Locație: {device.location}</p>
           )}
-          {stepsText && <p className="mt-2 text-xs text-slate-500">Stappen: {stepsText}</p>}
+          {stepsText && <p className="mt-2 text-xs text-slate-500">Pași: {stepsText}</p>}
           <div className="mt-3 flex gap-2 text-sm font-medium text-indigo-600">
             <Link href={`/devices/${device.id}`} className="hover:underline">
-              Bekijken
+              Vezi
             </Link>
             <button onClick={onEdit} className="text-slate-700 hover:underline">
-              Bewerken
+              Editează
             </button>
             <button onClick={onDelete} className="text-red-600 hover:underline">
-              Verwijderen
+              Șterge
             </button>
           </div>
         </div>
@@ -282,7 +282,7 @@ function DeviceCard({
           <div className="rounded-lg bg-white p-2 shadow-inner">
             <QRCode value={qrValue} size={110} />
           </div>
-          <p className="text-[11px] text-slate-500">Scan voor uitleg</p>
+          <p className="text-[11px] text-slate-500">Scanează pentru instrucțiuni</p>
         </div>
       </div>
     </div>
