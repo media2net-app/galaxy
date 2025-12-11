@@ -249,7 +249,17 @@ function DeviceCard({
 }) {
   const origin =
     typeof window !== "undefined" && window.location.origin ? window.location.origin : "";
-  const payload = typeof window !== "undefined" ? btoa(JSON.stringify(device)) : "";
+
+  const safePayload = () => {
+    if (typeof window === "undefined" || typeof btoa !== "function") return "";
+    try {
+      return btoa(JSON.stringify(device));
+    } catch {
+      return "";
+    }
+  };
+
+  const payload = safePayload();
   const qrValue =
     origin && payload
       ? `${origin}/devices/${device.id}?payload=${encodeURIComponent(payload)}`
